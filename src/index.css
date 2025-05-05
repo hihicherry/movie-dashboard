@@ -17,5 +17,10 @@ body {
 
 /* 自訂表格懸停效果 */
 tr:hover {
-  @apply bg-gradient-to-r from-primary-light/10 to-accent-light/10 dark:from-primary-dark/20 dark:to-accent-dark/20;
+  @apply bg-gradient-to-r from-primary/10 to-accent/10;
+}
+
+/* 自訂漸層按鈕 */
+.gradient-btn {
+  @apply bg-gradient-to-r from-primary to-accent text-white rounded-full px-8 py-3 shadow-md hover:bg-gradient-to-l hover:from-primaryHover hover:to-accentHover transition-all transform hover:scale-105;
 }

@@ -38,6 +38,15 @@ const App = () => {
 		localStorage.getItem("language") || "en-US"
 	);
 	const [selectedGenre, setSelectedGenre] = useState("all");
+	const [chartWidth, setChartWidth] = useState(window.innerWidth);
+
+	// 根據螢幕寬度動態設置圖表寬度
+	useEffect(() => {
+		const handleResize = () => setChartWidth(window.innerWidth);
+		window.addEventListener("resize", handleResize);
+		handleResize();
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	// 主題切換
 	useEffect(() => {
@@ -67,7 +76,7 @@ const App = () => {
 	if (moviesLoading || genresLoading)
 		return (
 			<div className="flex items-center justify-center min-h-screen bg-background-light dark:bg-background-dark">
-				<div className="text-2xl font-semibold text-primary-light dark:text-primary-dark animate-pulse">
+				<div className="text-2xl font-semibold text-primary animate-pulse">
 					{language === "en-US" ? "Loading..." : "載入中..."}
 				</div>
 			</div>
@@ -103,12 +112,37 @@ const App = () => {
 		})
 		.filter((d) => d.rating > 0);
 
+	// 動態設置 Tooltip 樣式
+	const tooltipStyle = {
+		backgroundColor: theme === "light" ? "#FFFFFF" : "#1F2937",
+		border: "none",
+		borderRadius: "8px",
+		boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+		padding: "8px",
+	};
+	const itemStyle = {
+		color: theme === "light" ? "#374151" : "#D1D5DB", // 動態文字顏色
+	};
+
+	// 根據螢幕寬度動態調整圖表寬度
+	const getChartWidth = () => {
+		const minWidth = 300;
+		const maxWidth = 800;
+		if (chartWidth < 640) return Math.max(minWidth, chartWidth * 0.9); // 小螢幕：90% 寬度，最小 300px
+		if (chartWidth <= 1024)
+			return Math.min(
+				maxWidth,
+				400 + ((chartWidth - 640) * (600 - 400)) / (1024 - 640)
+			); // 中螢幕：400px 至 600px
+		return maxWidth; // 大螢幕：最大 800px
+	};
+
 	return (
 		<div className="min-h-screen bg-background-light dark:bg-background-dark py-8 px-4 sm:px-6 lg:px-8">
-			<div className="max-w-7xl mx-auto">
+			<div className="w-full max-w-full sm:max-w-7xl mx-auto">
 				{/* 標題與切換按鈕 */}
 				<div className="flex flex-col sm:flex-row justify-between items-center mb-8 animate-fade-in">
-					<h1 className="text-4xl font-bold text-primary-light dark:text-primary-dark">
+					<h1 className="text-4xl font-bold text-primary">
 						{language === "en-US"
 							? "Movie Dashboard"
 							: "電影儀表板"}
@@ -118,7 +152,7 @@ const App = () => {
 							onClick={() =>
 								setTheme(theme === "light" ? "dark" : "light")
 							}
-							className="px-8 py-3 bg-primary-light dark:bg-primary-dark text-white rounded-full hover:bg-accent-light dark:hover:bg-accent-dark transition-transform transform hover:scale-105 shadow-md"
+							className="gradient-btn"
 						>
 							{theme === "light"
 								? language === "en-US"
@@ -134,7 +168,7 @@ const App = () => {
 									language === "en-US" ? "zh-TW" : "en-US"
 								)
 							}
-							className="px-8 py-3 bg-accent-light dark:bg-accent-dark text-white rounded-full hover:bg-primary-light dark:hover:bg-primary-dark transition-transform transform hover:scale-105 shadow-md"
+							className="gradient-btn"
 						>
 							{language === "en-US" ? "中文" : "English"}
 						</button>
@@ -142,7 +176,7 @@ const App = () => {
 				</div>
 
 				{/* 類型篩選 */}
-				<div className="mb-8 animate-fade-in">
+				<div className="mb-8 animate-fade-in w-full">
 					<label className="block text-lg font-medium text-text-light dark:text-text-dark mb-2">
 						{language === "en-US"
 							? "Filter by Genre"
@@ -151,7 +185,7 @@ const App = () => {
 					<select
 						value={selectedGenre}
 						onChange={(e) => setSelectedGenre(e.target.value)}
-						className="w-full sm:w-64 p-3 bg-white dark:bg-gray-800 text-text-light dark:text-text-dark rounded-lg shadow-sm focus:ring-2 focus:ring-accent-light dark:focus:ring-accent-dark focus:outline-none transition"
+						className="w-full sm:w-64 p-3 bg-primary text-white rounded-lg shadow-sm focus:ring-2 focus:ring-accent focus:outline-none transition"
 					>
 						<option value="all">
 							{language === "en-US" ? "All Genres" : "所有類型"}
@@ -165,11 +199,11 @@ const App = () => {
 				</div>
 
 				{/* 電影表格 */}
-				<div className="mb-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden animate-fade-in">
+				<div className="mb-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden animate-fade-in w-full">
 					<div className="overflow-x-auto">
 						<table className="w-full border-collapse min-w-[800px]">
 							<thead>
-								<tr className="bg-primary-light dark:bg-primary-dark text-white">
+								<tr className="bg-primary text-white">
 									<th className="p-4 text-left font-semibold">
 										{language === "en-US"
 											? "Title"
@@ -218,45 +252,42 @@ const App = () => {
 				</div>
 
 				{/* 柱狀圖 */}
-				<div className="mb-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in">
-					<h2 className="text-2xl font-semibold text-primary-light dark:text-primary-dark mb-4">
+				<div className="mb-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in w-full overflow-hidden">
+					<h2 className="text-2xl font-semibold text-primary mb-4">
 						{language === "en-US"
 							? "Average Rating by Genre"
 							: "類型平均評分"}
 					</h2>
 					<BarChart
-						width={600}
+						width={getChartWidth()}
 						height={300}
 						data={genreRatings}
 						className="mx-auto"
 					>
 						<CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-						<XAxis dataKey="genre" stroke="#6B7280" />
+						<XAxis
+							dataKey="genre"
+							stroke="#6B7280"
+							overflow-hidden
+						/>
 						<YAxis stroke="#6B7280" />
-						<Tooltip
-							contentStyle={{
-								backgroundColor:
-									theme === "light" ? "#FFFFFF" : "#1F2937",
-								border: "none",
-								borderRadius: "8px",
-								boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-							}}
-						/>
-						<Bar
-							dataKey="rating"
-							fill={theme === "light" ? "#F9A8D4" : "#DB2777"}
-						/>
+						<Tooltip contentStyle={tooltipStyle} />
+						<Bar dataKey="rating" fill="#F9A8D4" />
 					</BarChart>
 				</div>
 
 				{/* 散點圖 */}
-				<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in">
-					<h2 className="text-2xl font-semibold text-primary-light dark:text-primary-dark mb-4">
+				<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in w-full overflow-hidden">
+					<h2 className="text-2xl font-semibold text-primary mb-4">
 						{language === "en-US"
 							? "Rating vs Popularity"
 							: "評分與熱門度比較"}
 					</h2>
-					<ScatterChart width={600} height={300} className="mx-auto">
+					<ScatterChart
+						width={getChartWidth()}
+						height={300}
+						className="mx-auto"
+					>
 						<CartesianGrid stroke="#E5E7EB" />
 						<XAxis
 							type="number"
@@ -273,19 +304,14 @@ const App = () => {
 							stroke="#6B7280"
 						/>
 						<Tooltip
-							contentStyle={{
-								backgroundColor:
-									theme === "light" ? "#FFFFFF" : "#1F2937",
-								border: "none",
-								borderRadius: "8px",
-								boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-							}}
+							contentStyle={tooltipStyle}
+							itemStyle={itemStyle}
 							cursor={{ strokeDasharray: "3 3" }}
 						/>
 						<Scatter
 							name={language === "en-US" ? "Movies" : "電影"}
 							data={filteredMovies}
-							fill={theme === "light" ? "#C4B5FD" : "#7C3AED"}
+							fill="#C4B5FD"
 						/>
 					</ScatterChart>
 				</div>

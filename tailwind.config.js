@@ -9,25 +9,18 @@ module.exports = {
 				sans: ["Inter", "sans-serif"], // 英文備用字體
 			},
 			colors: {
-				primary: {
-					light: "#F9A8D4", // 淺色模式主色
-					dark: "#DB7777", // 深色模式主色
-				},
-				accent: {
-					light: "#C4B5FD", // 淺色模式強調色
-					dark: "#7C3AED", // 深色模式強調色
-				},
-				secondary: {
-					light: "#A7F3D0", // 淺色模式輔助色
-					dark: "#10B981", // 深色模式輔助色
-				},
+				primary: "#F9A8D4", // 粉紅（按鈕和表格頭）
+				accent: "#C4B5FD", // 淡紫（懸停和圖表）
+				primaryHover: "#F472B6", // 按鈕懸停粉紅
+				accentHover: "#A78BFA", // 按鈕懸停淡紫
+				secondary: "#A7F3D0", // 薄荷綠（輔助色）
 				background: {
-					light: "#F5F5F5", // 淺色模式背景
-					dark: "#1F2937", // 深色模式背景
+					light: "#F5F5F5", // 柔白（淺色模式背景）
+					dark: "#1F2937", // 深灰（深色模式背景）
 				},
 				text: {
-					light: "#374151", // 淺色模式文字
-					dark: "#D1D5DB", // 深色模式文字
+					light: "#374151", // 深灰（淺色模式文字）
+					dark: "#D1D5DB", // 淺灰（深色模式文字）
 				},
 			},
 			animation: {
