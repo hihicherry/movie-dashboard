@@ -1,3 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 全局字體 */
+body {
+  @apply font-cjk;
+}
+
+/* 英文內容使用 Inter */
+[lang="en"] {
+  @apply font-sans;
+}
+
+/* 自訂表格懸停效果 */
+tr:hover {
+  @apply bg-gradient-to-r from-primary-light/10 to-accent-light/10 dark:from-primary-dark/20 dark:to-accent-dark/20;
+}
