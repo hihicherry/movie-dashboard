@@ -22,6 +22,8 @@ module.exports = {
 					light: "#374151", // 深灰（淺色模式文字）
 					dark: "#D1D5DB", // 淺灰（深色模式文字）
 				},
+				grid: "#E5E7EB", // 網格線顏色
+				axis: "#6B7280", // 軸線顏色
 			},
 			animation: {
 				"fade-in": "fadeIn 0.5s ease-in-out",

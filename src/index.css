@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,20 +7,20 @@
 
 /* 全局字體 */
 body {
-  @apply font-cjk;
+	@apply font-cjk;
 }
 
 /* 英文內容使用 Inter */
 [lang="en"] {
-  @apply font-sans;
+	@apply font-sans;
 }
 
 /* 自訂表格懸停效果 */
 tr:hover {
-  @apply bg-gradient-to-r from-primary/10 to-accent/10;
+	@apply bg-gradient-to-r from-primary/10 to-accent/10;
 }
 
 /* 自訂漸層按鈕 */
 .gradient-btn {
-  @apply bg-gradient-to-r from-primary to-accent text-white rounded-full px-8 py-3 shadow-md hover:bg-gradient-to-l hover:from-primaryHover hover:to-accentHover transition-all transform hover:scale-105;
+	@apply relative px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-accent text-white font-semibold transition-all duration-300 hover:from-primaryHover hover:to-accentHover active:scale-95;
 }
